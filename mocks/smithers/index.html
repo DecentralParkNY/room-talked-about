@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROOMLOOP — say it, ship it</title>
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --ink:#f3f0ff;
+    --dim:#8a86a8;
+    --acc:#7c5cff;
+    --acc2:#00e6b8;
+    --hot:#ff4d8d;
+    --card:#14121f;
+    --line:#26233a;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(124,92,255,.22), transparent 60%),
+      radial-gradient(900px 500px at -10% 110%, rgba(0,230,184,.14), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,system-ui,sans-serif;
+    min-height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px;
+    overflow-x:hidden;
+  }
+  .app{
+    width:100%;
+    max-width:920px;
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:26px;
+    overflow:hidden;
+    background:linear-gradient(180deg,rgba(255,255,255,.03),transparent);
+    box-shadow:0 40px 120px -30px rgba(0,0,0,.8);
+  }
+  /* LEFT: pitch */
+  .pitch{padding:44px 40px 40px;position:relative}
+  .brand{display:flex;align-items:center;gap:12px;margin-bottom:34px}
+  .dot{
+    width:14px;height:14px;border-radius:50%;
+    background:var(--hot);
+    box-shadow:0 0 0 0 rgba(255,77,141,.6);
+    animation:live 1.8s infinite;
+  }
+  @keyframes live{
+    0%{box-shadow:0 0 0 0 rgba(255,77,141,.55)}
+    70%{box-shadow:0 0 0 14px rgba(255,77,141,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,77,141,0)}
+  }
+  .name{font-weight:800;letter-spacing:.28em;font-size:14px}
+  .tag{color:var(--dim);font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+  .headline{
+    font-size:40px;
+    line-height:1.05;
+    font-weight:800;
+    letter-spacing:-.02em;
+    margin:8px 0 18px;
+  }
+  .headline .g{
+    background:linear-gradient(92deg,var(--acc2),var(--acc) 60%,var(--hot));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .sub{color:var(--dim);font-size:15px;line-height:1.5;max-width:34ch}
+  .steps{display:flex;gap:8px;margin-top:28px;flex-wrap:wrap}
+  .chip{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    padding:7px 12px;border:1px solid var(--line);border-radius:999px;color:var(--dim);
+  }
+  .chip b{color:var(--ink);font-weight:700}
+  /* RIGHT: hero screen — the app itself */
+  .screen{
+    background:var(--card);
+    border-left:1px solid var(--line);
+    padding:26px 24px 28px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    min-height:440px;
+  }
+  .screen-top{display:flex;justify-content:space-between;align-items:center}
+  .room{font-size:12px;color:var(--dim);letter-spacing:.14em}
+  .room b{color:var(--acc2)}
+  .heard{
+    background:#0d0b17;border:1px solid var(--line);border-radius:16px;
+    padding:16px;font-size:14px;line-height:1.45;flex:1;
+    position:relative;overflow:hidden;
+  }
+  .heard .lbl{font-size:10px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase;margin-bottom:10px}
+  .line{opacity:0;transform:translateY(6px);animation:rise .5s forwards}
+  .line .who{color:var(--acc);font-weight:700}
+  .caret{display:inline-block;width:8px;height:15px;background:var(--acc2);vertical-align:-2px;animation:blink 1s steps(1) infinite;margin-left:2px}
+  @keyframes blink{50%{opacity:0}}
+  @keyframes rise{to{opacity:1;transform:none}}
+  .build{
+    border:1px dashed var(--line);border-radius:16px;padding:14px 16px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .build .lbl{font-size:10px;letter-spacing:.22em;color:var(--dim);text-transform:uppercase}
+  .bar{height:8px;border-radius:6px;background:#0d0b17;overflow:hidden}
+  .bar > i{
+    display:block;height:100%;width:0%;
+    background:linear-gradient(90deg,var(--acc2),var(--acc));
+    transition:width .4s ease;
+  }
+  .bstat{font-size:12px;color:var(--dim);min-height:16px}
+  .bstat b{color:var(--ink)}
+  .cta{
+    border:0;cursor:pointer;font-family:inherit;
+    padding:16px;border-radius:16px;font-size:15px;font-weight:800;letter-spacing:.04em;
+    color:#0a0a0f;
+    background:linear-gradient(92deg,var(--acc2),var(--acc));
+    box-shadow:0 12px 30px -8px rgba(124,92,255,.6);
+    transition:transform .12s ease, filter .2s ease;
+  }
+  .cta:hover{filter:brightness(1.08)}
+  .cta:active{transform:scale(.98)}
+  .cta.on{background:linear-gradient(92deg,var(--hot),var(--acc));color:#fff}
+  @media(max-width:760px){
+    .app{grid-template-columns:1fr}
+    .screen{border-left:0;border-top:1px solid var(--line)}
+    .headline{font-size:32px}
+  }
+</style>
+</head>
+<body>
+  <main class="app">
+    <section class="pitch">
+      <div class="brand">
+        <span class="dot"></span>
+        <span class="name">ROOMLOOP</span>
+        <span class="tag">· live in this room</span>
+      </div>
+      <h1 class="headline">The app you <span class="g">talked about</span> in this room — built before you leave it.</h1>
+      <p class="sub">ROOMLOOP listens to the conversation happening around you, catches the idea, and ships it as a running thing while you're still standing there.</p>
+      <div class="steps">
+        <span class="chip"><b>01</b> · say it</span>
+        <span class="chip"><b>02</b> · it hears it</span>
+        <span class="chip"><b>03</b> · it's live</span>
+      </div>
+    </section>
+
+    <section class="screen">
+      <div class="screen-top">
+        <span class="room">ROOM · <b>the convent</b> · 4 present</span>
+        <span class="room">◉ listening</span>
+      </div>
+
+      <div class="heard" id="heard">
+        <div class="lbl">overheard</div>
+        <div class="line" style="animation-delay:.1s"><span class="who">A:</span> what if the wall just showed who's talking</div>
+        <div class="line" style="animation-delay:.9s"><span class="who">B:</span> yeah and it builds it right here, no laptops</div>
+        <div class="line" style="animation-delay:1.7s"><span class="who">A:</span> like… we say it and it's just <i>there</i><span class="caret"></span></div>
+      </div>
+
+      <div class="build">
+        <div class="lbl">building from the room</div>
+        <div class="bar"><i id="fill"></i></div>
+        <div class="bstat" id="stat">tap to catch the idea →</div>
+      </div>
+
+      <button class="cta" id="cta">Catch this idea</button>
+    </section>
+  </main>
+
+<script>
+  const cta = document.getElementById('cta');
+  const fill = document.getElementById('fill');
+  const stat = document.getElementById('stat');
+  const steps = [
+    [12,"parsing what was said…"],
+    [34,"sketching the wall view…"],
+    [58,"wiring the live feed…"],
+    [82,"deploying to the room…"],
+    [100,"<b>live on the wall — before you left the room.</b>"]
+  ];
+  let running = false;
+  cta.addEventListener('click', () => {
+    if (running) return;
+    running = true;
+    cta.classList.add('on');
+    cta.textContent = "Building in the room…";
+    let i = 0;
+    const tick = () => {
+      const [pct, msg] = steps[i];
+      fill.style.width = pct + '%';
+      stat.innerHTML = msg;
+      i++;
+      if (i < steps.length) {
+        setTimeout(tick, 620);
+      } else {
+        cta.textContent = "It's live ✦";
+      }
+    };
+    tick();
+  });
+</script>
+</body>
+</html>
